@@ -1492,7 +1492,7 @@ Connected (press CTRL+C to quit)
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#multi_leg_pb_snapshot">multi_leg_pb_snapshot</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Milti-leg price book snapshot</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Multi-leg price book snapshot</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#subscribe">subscribe</a></p></td>
@@ -2148,7 +2148,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>symbol</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Sub-strings of format <code>&lt;Symbol&gt;@&lt;Ratio&gt;/…`</code> for each leg concatenated together</p>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sub-strings of format <code>&lt;Symbol&gt;@&lt;Ratio&gt;/…</code> for each leg concatenated together. Legs are ordered according to the <a href="#tradeable_entity_leg">"legs"</a> specification in <a href="#multi_leg_display_order_added">multi_leg_display_order_added</a>.</p>
 <p class="tableblock">e.g. for 3 legs: <code>"BTC-20220715-21000C@1/BTC-20220715-20000C@1/BTC-20220715-20500C@-2"</code></p></td>
 </tr>
 <tr>
@@ -2250,7 +2250,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>symbol</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Sub-strings of format <code>&lt;Symbol&gt;@&lt;Ratio&gt;/…`</code> for each leg concatenated together</p>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sub-strings of format <code>&lt;Symbol&gt;@&lt;Ratio&gt;/…</code> for each leg concatenated together. Legs are ordered according to the <a href="#tradeable_entity_leg">"legs"</a> specification in <a href="#multi_leg_display_order_added">multi_leg_display_order_added</a>.</p>
 <p class="tableblock">e.g. for 3 legs: <code>"BTC-20220715-21000C@1/BTC-20220715-20000C@1/BTC-20220715-20500C@-2"</code></p></td>
 </tr>
 <tr>
