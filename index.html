@@ -959,7 +959,7 @@ p { margin-bottom: 1.25rem; }
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>VERSION 1.3 (see <a href="#Market_Feeds_Revision_History">Revision History</a>)</p>
+<p>VERSION 1.4 (see <a href="#Market_Feeds_Revision_History">Revision History</a>)</p>
 </div>
 </div>
 </div>
@@ -1098,6 +1098,13 @@ Thanks to mentioned above simplifications, clients can connect their WebSocket a
 to exclude <code>rte_*</code> messages, specify <code>^all_rte</code>;</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>market_id[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allow clients to specify markets to return. See below for supported types. Defaults to all markets.</p>
+<p class="tableblock">Please see <a href="#MarketId_Supported_Values">market_id[] supported values</a></p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>snapshot_depth</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
@@ -1118,18 +1125,6 @@ to exclude <code>rte_*</code> messages, specify <code>^all_rte</code>;</p></td>
 <p class="tableblock">Please see <a href="#Snapshots_Period_Units">Table of units characters</a> for the details</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>greeks_only</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">flag</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Only publish <a href="#risk_snapshot">risk_snapshot</a> data. Defaults to <code>false</code>.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>multi_leg_only</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">flag</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Only publish multi-leg data. Defaults to <code>false</code>.</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>since_timestamp</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">timestamp</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
@@ -1142,6 +1137,22 @@ to exclude <code>rte_*</code> messages, specify <code>^all_rte</code>;</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">To pack multiple JSON messages into a single JSON-object as an array of original messages: <code>{"join_json": [&#8230;&#8203;]}</code>. . Defaults to <code>false</code>.</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>DEPRECATED</em></strong> <code><em>greeks_only</em></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">flag</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Only publish <a href="#risk_snapshot">risk_snapshot</a> data. Defaults to <code>false</code>.</p>
+<p class="tableblock"><em>Deprecated, use the following connection parameters instead</em>:</p>
+<p class="tableblock"><code>BASE_URL/?type[]=risk&amp;mbp_period=0&amp;mbo_period=0</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>DEPRECATED</em></strong> <code><em>multi_leg_only</em></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">flag</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Only publish multi-leg data. Defaults to <code>false</code>.</p>
+<p class="tableblock"><em>Deprecated, use the following connection parameters instead</em>:</p>
+<p class="tableblock"><code>BASE_URL/?type[]=all_multi_leg&amp;tradeable_type[]=multi_leg</code></p></td>
+</tr>
 </tbody>
 </table>
 <div class="paragraph">
@@ -1151,7 +1162,7 @@ to exclude <code>rte_*</code> messages, specify <code>^all_rte</code>;</p></td>
 <p><code>?type[]=all,subscriptions_status&amp;mbp_period=1&amp;mbo_period=1&amp;snapshot_depth=25</code></p>
 </div>
 <table id="Tradeable_Type_Supported_Values" class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 4. tradeable_type[] values</caption>
+<caption class="title">Table 4. <strong>tradeable_type[]</strong> values</caption>
 <colgroup>
 <col style="width: 20%;">
 <col style="width: 80%;">
@@ -1165,28 +1176,32 @@ to exclude <code>rte_*</code> messages, specify <code>^all_rte</code>;</p></td>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><code>index</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">All Index markets</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Index entities</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><code>option</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">All Option markets</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Option entities</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><code>perpetual</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">All Perpetual markets</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Perpetual entities</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><code>future</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">All Future markets</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Future entities</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><code>spot</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">All Spot markets</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Spot entities</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><code>multi_leg</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Multi-leg entities</p></td>
 </tr>
 </tbody>
 </table>
 <table id="Type_Supported_Values" class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 5. type[] values</caption>
+<caption class="title">Table 5. <strong>type[]</strong> values</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -1231,9 +1246,7 @@ to exclude <code>rte_*</code> messages, specify <code>^all_rte</code>;</p></td>
 <p class="tableblock"><a href="#multi_leg_display_order_added">multi_leg_display_order_added</a>
 <a href="#multi_leg_display_order_deleted">multi_leg_display_order_deleted</a>
 <a href="#multi_leg_display_order_executed">multi_leg_display_order_executed</a>
-<a href="#multi_leg_display_order_updated">multi_leg_display_order_updated</a>
-<a href="#multi_leg_ob_snapshot">multi_leg_ob_snapshot</a>
-<a href="#multi_leg_pb_snapshot">multi_leg_pb_snapshot</a></p></td>
+<a href="#multi_leg_display_order_updated">multi_leg_display_order_updated</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><code>display_order</code></p></td>
@@ -1312,8 +1325,31 @@ to exclude <code>rte_*</code> messages, specify <code>^all_rte</code>;</p></td>
 </tr>
 </tbody>
 </table>
+<table id="MarketId_Supported_Values" class="tableblock frame-all grid-all" style="width: 80%;">
+<caption class="title">Table 6. <strong>market_id[]</strong> values</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Value</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><code>0</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong><em>treadable</em> market</strong> - where <a href="https://www.investopedia.com/terms/f/firmquote.asp">firm (executable) orders</a> are placed;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><code>none</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong><em>indicative</em> market</strong> - where <a href="https://www.investopedia.com/terms/i/indicativequote.asp">indicative orders</a> are placed</p></td>
+</tr>
+</tbody>
+</table>
 <table id="Snapshots_Period_Units" class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 6. mbp_period, mbo_period units characters</caption>
+<caption class="title">Table 7. <strong>mbp_period</strong>, <strong>mbo_period</strong> units characters</caption>
 <colgroup>
 <col style="width: 10%;">
 <col style="width: 90%;">
@@ -1527,19 +1563,23 @@ wscat -c 'wss://api.wss.dev.power.trade/v1/feeds/reference_data?since_timestamp=
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#ob_snapshot">ob_snapshot</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Order book snapshot</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>Order book</em></strong> snapshot.</p>
+<p class="tableblock">Controlled by <a href="#Snapshots_Period_Units">snapshot period</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#pb_snapshot">pb_snapshot</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Price book snapshot</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><em>Price book</em></strong> snapshot.</p>
+<p class="tableblock">Controlled by <a href="#Snapshots_Period_Units">snapshot period</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#multi_leg_ob_snapshot">multi_leg_ob_snapshot</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Multi-leg order book snapshot</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Multi-leg <strong><em>order book</em></strong> snapshot.</p>
+<p class="tableblock">Controlled by <a href="#Snapshots_Period_Units">snapshot period</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#multi_leg_pb_snapshot">multi_leg_pb_snapshot</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Multi-leg price book snapshot</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Multi-leg <strong><em>price book</em></strong> snapshot.</p>
+<p class="tableblock">Controlled by <a href="#Snapshots_Period_Units">snapshot period</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#subscriptions_status">subscriptions_status</a></p></td>
@@ -1746,7 +1786,7 @@ wscat -c 'wss://api.wss.dev.power.trade/v1/feeds/reference_data?since_timestamp=
 <p>This message extends <a href="#trade">trade</a> messages and defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 7. rte_trade fields</caption>
+<caption class="title">Table 8. rte_trade fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -1850,7 +1890,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>Risk metrics snapshot.</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 8. risk_snapshot fields</caption>
+<caption class="title">Table 9. risk_snapshot fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -1969,7 +2009,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>Order book snapshot.</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 9. ob_snapshot fields</caption>
+<caption class="title">Table 10. ob_snapshot fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -2081,7 +2121,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>Price book snapshot.</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 10. pb_snapshot fields</caption>
+<caption class="title">Table 11. pb_snapshot fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -2175,7 +2215,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>Multi-leg order book snapshot.</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 11. multi_leg_ob_snapshot fields</caption>
+<caption class="title">Table 12. multi_leg_ob_snapshot fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -2277,7 +2317,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>Multi-leg price book snapshot.</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 12. multi_leg_pb_snapshot fields</caption>
+<caption class="title">Table 13. multi_leg_pb_snapshot fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -2377,7 +2417,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>Useful when a client connects to the API and needs to start proper interpetation of corresponding market data with minimal possible delay, so such marker in the stream can be used.</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 13. subscriptions_status fields</caption>
+<caption class="title">Table 14. subscriptions_status fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -2446,7 +2486,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 </ul>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 14. subscriptions_in_progress fields</caption>
+<caption class="title">Table 15. subscriptions_in_progress fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -2511,7 +2551,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>Please see usage examples in <a href="#Market_Feeds_Start_With_Zero_Subscriptions">Start with zero subscriptions</a>.</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 15. subscribe fields</caption>
+<caption class="title">Table 16. subscribe fields</caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -2586,7 +2626,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>Confirmation of <a href="#subscribe">subscribe</a> success or a notification about a new treadable entity listing.</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 16. subscribed fields</caption>
+<caption class="title">Table 17. subscribed fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -2663,7 +2703,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>Informs about an error of <a href="#subscribe">"subscribe"</a> command.</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 17. subscribe_error fields</caption>
+<caption class="title">Table 18. subscribe_error fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -2685,7 +2725,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 18. subscribe_error messages</caption>
+<caption class="title">Table 19. subscribe_error messages</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -2728,7 +2768,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>Unsubscribe from specific instruments on an active connection.</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 19. unsubscribe fields</caption>
+<caption class="title">Table 20. unsubscribe fields</caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -2800,7 +2840,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>Confirmation of <a href="#unsubscribe">unsubscribe</a> success or a notification about treadable entity de-listing.</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 20. unsubscribed fields</caption>
+<caption class="title">Table 21. unsubscribed fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -2877,7 +2917,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>Informs about an error of <a href="#unsubscribe">"unsubscribe"</a> command.</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 21. unsubscribe_error fields</caption>
+<caption class="title">Table 22. unsubscribe_error fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -2899,7 +2939,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 22. unsubscribe_error messages</caption>
+<caption class="title">Table 23. unsubscribe_error messages</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -2940,7 +2980,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 23. cycle_ended fields</caption>
+<caption class="title">Table 24. cycle_ended fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -2990,7 +3030,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 24. cycle_ending fields</caption>
+<caption class="title">Table 25. cycle_ending fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -3040,7 +3080,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 25. cycle_started fields</caption>
+<caption class="title">Table 26. cycle_started fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -3090,7 +3130,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 26. cycle_starting fields</caption>
+<caption class="title">Table 27. cycle_starting fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -3180,7 +3220,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 27. deliverable&lt;aliased_deliverable&gt; fields</caption>
+<caption class="title">Table 28. deliverable&lt;aliased_deliverable&gt; fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -3258,7 +3298,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 28. deliverable&lt;exchange_token&gt; fields</caption>
+<caption class="title">Table 29. deliverable&lt;exchange_token&gt; fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -3339,7 +3379,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 29. deliverable&lt;exchange_trading_limit&gt; fields</caption>
+<caption class="title">Table 30. deliverable&lt;exchange_trading_limit&gt; fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -3418,7 +3458,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 30. deliverable&lt;fiat_currency&gt; fields</caption>
+<caption class="title">Table 31. deliverable&lt;fiat_currency&gt; fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -3499,7 +3539,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 31. deliverable&lt;future&gt; fields</caption>
+<caption class="title">Table 32. deliverable&lt;future&gt; fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -3600,7 +3640,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 32. deliverable&lt;fx_spot&gt; fields</caption>
+<caption class="title">Table 33. deliverable&lt;fx_spot&gt; fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -3680,7 +3720,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 33. deliverable&lt;index&gt; fields</caption>
+<caption class="title">Table 34. deliverable&lt;index&gt; fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -3759,7 +3799,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 34. deliverable&lt;option&gt; fields</caption>
+<caption class="title">Table 35. deliverable&lt;option&gt; fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -3865,7 +3905,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 35. deliverable&lt;perpetual_future&gt; fields</caption>
+<caption class="title">Table 36. deliverable&lt;perpetual_future&gt; fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -3972,7 +4012,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 36. deliverable&lt;stable_token&gt; fields</caption>
+<caption class="title">Table 37. deliverable&lt;stable_token&gt; fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -4055,7 +4095,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 37. display_order_added fields</caption>
+<caption class="title">Table 38. display_order_added fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -4135,7 +4175,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 38. display_order_deleted fields</caption>
+<caption class="title">Table 39. display_order_deleted fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -4203,7 +4243,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 39. display_order_executed fields</caption>
+<caption class="title">Table 40. display_order_executed fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -4289,7 +4329,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 40. display_order_updated fields</caption>
+<caption class="title">Table 41. display_order_updated fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -4375,7 +4415,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 41. funding_rate fields</caption>
+<caption class="title">Table 42. funding_rate fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -4449,7 +4489,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 42. multi_leg_display_order_added fields</caption>
+<caption class="title">Table 43. multi_leg_display_order_added fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -4534,7 +4574,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 43. multi_leg_display_order_deleted fields</caption>
+<caption class="title">Table 44. multi_leg_display_order_deleted fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -4607,7 +4647,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 44. multi_leg_display_order_executed fields</caption>
+<caption class="title">Table 45. multi_leg_display_order_executed fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -4692,7 +4732,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 45. multi_leg_display_order_updated fields</caption>
+<caption class="title">Table 46. multi_leg_display_order_updated fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -4783,7 +4823,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 46. reference_price fields</caption>
+<caption class="title">Table 47. reference_price fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -4851,7 +4891,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 47. settlement_price fields</caption>
+<caption class="title">Table 48. settlement_price fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -4940,7 +4980,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 48. time fields</caption>
+<caption class="title">Table 49. time fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -4984,7 +5024,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 49. top_of_book fields</caption>
+<caption class="title">Table 50. top_of_book fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5064,7 +5104,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 50. trade fields</caption>
+<caption class="title">Table 51. trade fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5172,7 +5212,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 51. tradeable_entity&lt;multi_market&gt; fields</caption>
+<caption class="title">Table 52. tradeable_entity&lt;multi_market&gt; fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5284,7 +5324,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 52. tradeable_entity&lt;simple_market&gt; fields</caption>
+<caption class="title">Table 53. tradeable_entity&lt;simple_market&gt; fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5408,7 +5448,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 53. trading_rule fields</caption>
+<caption class="title">Table 54. trading_rule fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5506,7 +5546,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This message defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 54. trading_state fields</caption>
+<caption class="title">Table 55. trading_state fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5668,7 +5708,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This structure defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 55. aliased_deliverable fields</caption>
+<caption class="title">Table 56. aliased_deliverable fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5699,7 +5739,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This structure defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 56. date fields</caption>
+<caption class="title">Table 57. date fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5740,7 +5780,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This structure defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 57. datetime fields</caption>
+<caption class="title">Table 58. datetime fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5776,7 +5816,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This structure defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 58. exchange_token fields</caption>
+<caption class="title">Table 59. exchange_token fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5822,7 +5862,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This structure defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 59. exchange_trading_limit fields</caption>
+<caption class="title">Table 60. exchange_trading_limit fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5858,7 +5898,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This structure defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 60. fiat_currency fields</caption>
+<caption class="title">Table 61. fiat_currency fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5904,7 +5944,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This structure defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 61. full_order&lt;account_id&gt; fields</caption>
+<caption class="title">Table 62. full_order&lt;account_id&gt; fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5985,7 +6025,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This structure defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 62. future fields</caption>
+<caption class="title">Table 63. future fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -6056,7 +6096,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This structure defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 63. fx_spot fields</caption>
+<caption class="title">Table 64. fx_spot fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -6097,7 +6137,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This structure defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 64. greeks fields</caption>
+<caption class="title">Table 65. greeks fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -6143,7 +6183,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This structure defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 65. index fields</caption>
+<caption class="title">Table 66. index fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -6179,7 +6219,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This structure defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 66. multi_leg_order&lt;account_id&gt; fields</caption>
+<caption class="title">Table 67. multi_leg_order&lt;account_id&gt; fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -6250,7 +6290,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This structure defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 67. multi_market fields</caption>
+<caption class="title">Table 68. multi_market fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -6281,7 +6321,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This structure defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 68. option fields</caption>
+<caption class="title">Table 69. option fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -6377,7 +6417,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This structure defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 69. perpetual_future fields</caption>
+<caption class="title">Table 70. perpetual_future fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -6453,7 +6493,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This structure defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 70. simple_market fields</caption>
+<caption class="title">Table 71. simple_market fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -6489,7 +6529,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This structure defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 71. simple_order&lt;account_id&gt; fields</caption>
+<caption class="title">Table 72. simple_order&lt;account_id&gt; fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -6555,7 +6595,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This structure defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 72. stable_token fields</caption>
+<caption class="title">Table 73. stable_token fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -6611,7 +6651,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This structure defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 73. time_of_day fields</caption>
+<caption class="title">Table 74. time_of_day fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -6657,7 +6697,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This structure defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 74. tradeable_entity_leg fields</caption>
+<caption class="title">Table 75. tradeable_entity_leg fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -6693,7 +6733,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This structure defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 75. trigger_instructions fields</caption>
+<caption class="title">Table 76. trigger_instructions fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -6749,7 +6789,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p>This structure defines the following fields:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 76. zoned_datetime fields</caption>
+<caption class="title">Table 77. zoned_datetime fields</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -6999,7 +7039,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 <p><code>account_id</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 77. account_id constants</caption>
+<caption class="title">Table 78. account_id constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7036,7 +7076,7 @@ The decimal part is padded to the number of decimal places determined by the tra
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 78. basis_points constants</caption>
+<caption class="title">Table 79. basis_points constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7069,7 +7109,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 79. channel_id constants</caption>
+<caption class="title">Table 80. channel_id constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7101,7 +7141,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 80. contract_size constants</caption>
+<caption class="title">Table 81. contract_size constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7134,7 +7174,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 81. creation_source_id constants</caption>
+<caption class="title">Table 82. creation_source_id constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7167,7 +7207,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 82. day constants</caption>
+<caption class="title">Table 83. day constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7199,7 +7239,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 83. decimal_places constants</caption>
+<caption class="title">Table 84. decimal_places constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7231,7 +7271,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 84. deliverable_id constants</caption>
+<caption class="title">Table 85. deliverable_id constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7263,7 +7303,7 @@ The type also supports the following string constants:</p>
 <p><code>delivery_style</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 85. delivery_style constants</caption>
+<caption class="title">Table 86. delivery_style constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7310,7 +7350,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 86. display_order_id constants</caption>
+<caption class="title">Table 87. display_order_id constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7342,7 +7382,7 @@ The type also supports the following string constants:</p>
 <p><code>execution_instruction</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 87. execution_instruction constants</caption>
+<caption class="title">Table 88. execution_instruction constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7373,7 +7413,7 @@ The type also supports the following string constants:</p>
 <p><code>expiry_status</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 88. expiry_status constants</caption>
+<caption class="title">Table 89. expiry_status constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7410,7 +7450,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 89. funding_spec_id constants</caption>
+<caption class="title">Table 90. funding_spec_id constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7443,7 +7483,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 90. hours constants</caption>
+<caption class="title">Table 91. hours constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7475,7 +7515,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 91. iso4217_currency_number constants</caption>
+<caption class="title">Table 92. iso4217_currency_number constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7508,7 +7548,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 92. leg_ratio constants</caption>
+<caption class="title">Table 93. leg_ratio constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7540,7 +7580,7 @@ The type also supports the following string constants:</p>
 <p><code>liquidity_flag</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 93. liquidity_flag constants</caption>
+<caption class="title">Table 94. liquidity_flag constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7581,7 +7621,7 @@ The type also supports the following string constants:</p>
 <p><code>listing_status</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 94. listing_status constants</caption>
+<caption class="title">Table 95. listing_status constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7618,7 +7658,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 95. margin_spec_id constants</caption>
+<caption class="title">Table 96. margin_spec_id constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7651,7 +7691,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 96. market_id constants</caption>
+<caption class="title">Table 97. market_id constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7683,7 +7723,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 97. minutes constants</caption>
+<caption class="title">Table 98. minutes constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7715,7 +7755,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 98. month constants</caption>
+<caption class="title">Table 99. month constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7747,7 +7787,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 99. nanoseconds constants</caption>
+<caption class="title">Table 100. nanoseconds constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7779,7 +7819,7 @@ The type also supports the following string constants:</p>
 <p><code>option_exercise_style</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 100. option_exercise_style constants</caption>
+<caption class="title">Table 101. option_exercise_style constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7810,7 +7850,7 @@ The type also supports the following string constants:</p>
 <p><code>option_type</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 101. option_type constants</caption>
+<caption class="title">Table 102. option_type constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7846,7 +7886,7 @@ The type also supports the following string constants:</p>
 <p><code>option_valuation_approach</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 102. option_valuation_approach constants</caption>
+<caption class="title">Table 103. option_valuation_approach constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7902,7 +7942,7 @@ The type also supports the following string constants:</p>
 <p><code>order_action_reject_reason</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 103. order_action_reject_reason constants</caption>
+<caption class="title">Table 104. order_action_reject_reason constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -8078,7 +8118,7 @@ The type also supports the following string constants:</p>
 <p><code>order_cancelled_reason</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 104. order_cancelled_reason constants</caption>
+<caption class="title">Table 105. order_cancelled_reason constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -8154,7 +8194,7 @@ The type also supports the following string constants:</p>
 <p><code>order_execution_prevented_reason</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 105. order_execution_prevented_reason constants</caption>
+<caption class="title">Table 106. order_execution_prevented_reason constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -8191,7 +8231,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 106. order_id constants</caption>
+<caption class="title">Table 107. order_id constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -8223,7 +8263,7 @@ The type also supports the following string constants:</p>
 <p><code>order_state</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 107. order_state constants</caption>
+<caption class="title">Table 108. order_state constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -8270,7 +8310,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 108. order_token constants</caption>
+<caption class="title">Table 109. order_token constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -8303,7 +8343,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 109. percent constants</caption>
+<caption class="title">Table 110. percent constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -8336,7 +8376,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 110. position_balance constants</caption>
+<caption class="title">Table 111. position_balance constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -8368,7 +8408,7 @@ The type also supports the following string constants:</p>
 <p><code>position_kind</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 111. position_kind constants</caption>
+<caption class="title">Table 112. position_kind constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -8515,7 +8555,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 112. position_source_id constants</caption>
+<caption class="title">Table 113. position_source_id constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -8547,7 +8587,7 @@ The type also supports the following string constants:</p>
 <p><code>position_source_type</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 113. position_source_type constants</caption>
+<caption class="title">Table 114. position_source_type constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -8639,7 +8679,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 114. position_value constants</caption>
+<caption class="title">Table 115. position_value constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -8671,7 +8711,7 @@ The type also supports the following string constants:</p>
 <p><code>positions_risk_status</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 115. positions_risk_status constants</caption>
+<caption class="title">Table 116. positions_risk_status constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -8718,7 +8758,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 116. price constants</caption>
+<caption class="title">Table 117. price constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -8750,7 +8790,7 @@ The type also supports the following string constants:</p>
 <p><code>product_type</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 117. product_type constants</caption>
+<caption class="title">Table 118. product_type constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -8812,7 +8852,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 118. quantity constants</caption>
+<caption class="title">Table 119. quantity constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -8844,7 +8884,7 @@ The type also supports the following string constants:</p>
 <p><code>reference_price_type</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 119. reference_price_type constants</caption>
+<caption class="title">Table 120. reference_price_type constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -8881,7 +8921,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 120. scaled_fixed_point constants</caption>
+<caption class="title">Table 121. scaled_fixed_point constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -8914,7 +8954,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 121. seconds constants</caption>
+<caption class="title">Table 122. seconds constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -8946,7 +8986,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 122. sequence_number constants</caption>
+<caption class="title">Table 123. sequence_number constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -8977,7 +9017,7 @@ The type also supports the following string constants:</p>
 <p><code>session_end_reason</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 123. session_end_reason constants</caption>
+<caption class="title">Table 124. session_end_reason constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -9024,7 +9064,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 124. session_id constants</caption>
+<caption class="title">Table 125. session_id constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -9055,7 +9095,7 @@ The type also supports the following string constants:</p>
 <p><code>settlement_event_type</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 125. settlement_event_type constants</caption>
+<caption class="title">Table 126. settlement_event_type constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -9091,7 +9131,7 @@ The type also supports the following string constants:</p>
 <p><code>settlement_price_type</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 126. settlement_price_type constants</caption>
+<caption class="title">Table 127. settlement_price_type constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -9127,7 +9167,7 @@ The type also supports the following string constants:</p>
 <p><code>side</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 127. side constants</caption>
+<caption class="title">Table 128. side constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -9163,7 +9203,7 @@ The type also supports the following string constants:</p>
 <p><code>stabilisation_approach</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 128. stabilisation_approach constants</caption>
+<caption class="title">Table 129. stabilisation_approach constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -9210,7 +9250,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 129. stream_id constants</caption>
+<caption class="title">Table 130. stream_id constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -9241,7 +9281,7 @@ The type also supports the following string constants:</p>
 <p><code>stream_reject_reason</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 130. stream_reject_reason constants</caption>
+<caption class="title">Table 131. stream_reject_reason constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -9288,7 +9328,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 131. strikes_spec_id constants</caption>
+<caption class="title">Table 132. strikes_spec_id constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -9320,7 +9360,7 @@ The type also supports the following string constants:</p>
 <p><code>suspension_status</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 132. suspension_status constants</caption>
+<caption class="title">Table 133. suspension_status constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -9356,7 +9396,7 @@ The type also supports the following string constants:</p>
 <p><code>time_in_force</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 133. time_in_force constants</caption>
+<caption class="title">Table 134. time_in_force constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -9393,7 +9433,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 134. time_to_live constants</caption>
+<caption class="title">Table 135. time_to_live constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -9426,7 +9466,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 135. trade_id constants</caption>
+<caption class="title">Table 136. trade_id constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -9458,7 +9498,7 @@ The type also supports the following string constants:</p>
 <p><code>trade_price_type</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 136. trade_price_type constants</caption>
+<caption class="title">Table 137. trade_price_type constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -9504,7 +9544,7 @@ The type also supports the following string constants:</p>
 <p><code>tradeability</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 137. tradeability constants</caption>
+<caption class="title">Table 138. tradeability constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -9551,7 +9591,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 138. tradeable_entity_id constants</caption>
+<caption class="title">Table 139. tradeable_entity_id constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -9583,7 +9623,7 @@ The type also supports the following string constants:</p>
 <p><code>trigger_event_type</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 139. trigger_event_type constants</caption>
+<caption class="title">Table 140. trigger_event_type constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -9619,7 +9659,7 @@ The type also supports the following string constants:</p>
 <p><code>trigger_price_direction</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 140. trigger_price_direction constants</caption>
+<caption class="title">Table 141. trigger_price_direction constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -9655,7 +9695,7 @@ The type also supports the following string constants:</p>
 <p><code>trigger_price_type</code> is an enumeration with the following well-known string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 141. trigger_price_type constants</caption>
+<caption class="title">Table 142. trigger_price_type constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -9697,7 +9737,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 142. utc_timestamp constants</caption>
+<caption class="title">Table 143. utc_timestamp constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -9730,7 +9770,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 143. value constants</caption>
+<caption class="title">Table 144. value constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -9763,7 +9803,7 @@ The type also supports the following string constants:</p>
 The type also supports the following string constants:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 80%;">
-<caption class="title">Table 144. year constants</caption>
+<caption class="title">Table 145. year constants</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -9793,7 +9833,7 @@ The type also supports the following string constants:</p>
 <h2 id="_revision_history">3. <strong>Revision History</strong></h2>
 <div class="sectionbody">
 <table id="Market_Feeds_Revision_History" class="tableblock frame-all grid-all" style="width: 95%;">
-<caption class="title">Table 145. revision history:</caption>
+<caption class="title">Table 146. revision history:</caption>
 <colgroup>
 <col style="width: 5%;">
 <col style="width: 5%;">
@@ -9807,6 +9847,13 @@ The type also supports the following string constants:</p>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">2022/08/30</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">1.4</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Adding connection parameter <a href="#Market_Feeds_Connection_Parameters">market_id[]</a>;</p>
+<p class="tableblock">adding <code>multi_leg</code> into <a href="#Tradeable_Type_Supported_Values">tradeable_type[]</a>;</p>
+<p class="tableblock">DEPRECATED: <code>greeks_only, multi_leg_only</code>.</p></td>
+</tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">2022/08/15</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">1.3</p></td>
